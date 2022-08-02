@@ -1,22 +1,6 @@
-/*
-s1 + s2 = tot
-s1 - s2 = d
-s1 - (tot - s1) = d
-2s1 - tot = d
-s1 = (tot+d)/2
-so we simply have to count subsets with given sum
-//corner case:
-tot-d >= 0
-tot-d should be even
-
-to now the question is exactly same as number_of_subsets
-
-//https://www.codingninjas.com/codestudio/problems/partitions-with-given-difference_3751628
-
-*/
-
-int mod = 1e9 + 7;
-
+/*Space optimized*/
+//TC: O(N*target)
+//SC: 2*O(target)
 int findWays(vector<int> &num, int tar)
 {
     // Write your code here.
@@ -38,23 +22,39 @@ int findWays(vector<int> &num, int tar)
             if (num[i] <= j)
                 pick = prev[j - num[i]];
             int notPick = prev[j];
-            cur[j] = (pick + notPick) % mod;
+            cur[j] = (pick + notPick);
         }
         prev = cur;
     }
-    return prev[tar] % mod;
+    return prev[tar];
 }
 
 int countPartitions(int n, int d, vector<int> &arr)
 {
-    // Write your code here.
     int sum = 0;
     for (int i = 0; i < n; i++)
     {
         sum += arr[i];
     }
 
-    if ((sum-d<0) || (sum+d < 0) || (sum + d) % 2 != 0)
+    if ((sum - d < 0) || (sum + d < 0) || (sum + d) % 2 != 0)
         return 0;
     return findWays(arr, (sum + d) / 2);
 }
+
+int findTargetSumWays(vector<int> &nums, int target)
+{
+    return countPartitions(nums.size(), target, nums);
+}
+
+
+
+
+/*
+In this question we have to append +/- and sum them up to make them equal to the target.
+If there are N elements and we append + to x elements and - to (N-x) elements and if we add them up it should give target
+so it is basically Summation(x) + Summation(n-x), since (n-x) are all -ves so
+Summation(x) - Summation(n-x) = t
+s1 - s2 = t
+this is exactly the same question as Count_partition_with_given_difference
+*/
