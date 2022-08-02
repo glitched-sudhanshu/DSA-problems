@@ -1,7 +1,7 @@
 /*Brute force*/
 // TC: O(N)
 // SC: O(1)
-
+vector<int> nms;
 NumArray(vector<int> &nums)
 {
     nms = nums;
