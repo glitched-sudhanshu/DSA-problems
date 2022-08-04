@@ -53,7 +53,7 @@ int coinChange(vector<int> &coins, int amount)
 
 /*Tabulation*/
 // TC: O(N*amount)
-// SC: O(N*amount)
+// SC: 2*O(N*amount)
 int coinChange(vector<int> &coins, int amount)
 {
     int n = coins.size();
@@ -83,7 +83,7 @@ int coinChange(vector<int> &coins, int amount)
 
 /*Space optimization*/
 // TC: O(N*amount)
-// SC: 2*O(amount)
+// SC: O(amount)
 int coinChange(vector<int> &coins, int amount)
 {
     int n = coins.size();
