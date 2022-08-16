@@ -1,0 +1,1 @@
+{"name":"Local: cf","url":"d:\\Github DSA\\cf.cpp","tests":[{"id":1660667157742,"input":"3\n3 1\n3 1 2\n1 2\n4 2\n1 3 4 2\n4 5\n3 2\n5 2\n1 2 3 5 4\n5 1000000000\n4 6","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Github DSA\\cf.cpp","group":"local","local":true}
