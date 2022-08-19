@@ -1,7 +1,7 @@
-/**/
-//TC: O(N*2*K)
-//SC: O(N*2*K) + O(N)
-int help(vector<int> &prices, int n, int trans, int &k, vector<vector<int>> &dp)
+/*Recursion*/
+// TC: O(expo)
+// SC: O(N)
+int help(vector<int> &prices, int n, int trans, int &k)
 {
     if (n == prices.size())
         return 0;
@@ -13,17 +13,21 @@ int help(vector<int> &prices, int n, int trans, int &k, vector<vector<int>> &dp)
 
     int profit = 0;
     if (trans % 2 == 0)
-        profit = max(-prices[n] + help(prices, n + 1, trans + 1, k, dp), 0 + help(prices, n + 1, trans, k, dp));
+        profit = max(-prices[n] + help(prices, n + 1, trans + 1, k), 0 + help(prices, n + 1, trans, k));
     else
-        profit = max(prices[n] + help(prices, n + 1, trans + 1, k, dp), 0 + help(prices, n + 1, trans, k, dp));
+        profit = max(prices[n] + help(prices, n + 1, trans + 1, k), 0 + help(prices, n + 1, trans, k));
 
-    return dp[n][trans] = profit;
+    return profit;
 }
 
+int maxProfit(int k, vector<int> &prices)
+{
+    return help(prices, 0, 0, k);
+}
 
 /*Memoization*/
-//TC: O(N*2*K)
-//SC: O(N*2*K) + O(N)
+// TC: O(N*2*K)
+// SC: O(N*2*K) + O(N)
 int help(vector<int> &prices, int n, int trans, int &k, vector<vector<int>> &dp)
 {
     if (n == prices.size())
@@ -44,8 +48,8 @@ int help(vector<int> &prices, int n, int trans, int &k, vector<vector<int>> &dp)
 }
 
 /*Tabulation*/
-//TC: O(N*2*K)
-//SC: O(N*2*K)
+// TC: O(N*2*K)
+// SC: O(N*2*K)
 int maxProfit(int k, vector<int> &prices)
 {
     int n = prices.size();
@@ -73,8 +77,8 @@ int maxProfit(int k, vector<int> &prices)
 }
 
 /*Space optimized*/
-//TC: O(N*2*K)
-//SC: O(2*K)
+// TC: O(N*2*K)
+// SC: O(2*K)
 int maxProfit(int k, vector<int> &prices)
 {
     int n = prices.size();
