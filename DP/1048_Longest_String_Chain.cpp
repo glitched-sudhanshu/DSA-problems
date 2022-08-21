@@ -50,5 +50,5 @@ int longestStrChain(vector<string> &words)
     return maxi;
 }
 
-//TODO:
-//Check if any other more optimized solution
+// TODO:
+// Check if any other more optimized solution
