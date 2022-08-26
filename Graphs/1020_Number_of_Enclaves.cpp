@@ -1,103 +1,93 @@
 /*dfs*/
 // TC: O(N*M)
 // SC: O(N*M)
-void dfs(vector<vector<int>> &g, int &count, int i, int j, bool &bound)
+bool dfs(vector<vector<int>> &grid, int i, int j, int &area)
 {
-    if (i < 0 || j < 0 || i > g.size() - 1 || j > g[0].size() - 1)
-        return;
-
-    if (g[i][j] == 0)
-        return;
-
-    g[i][j] = 0;
-
-    if (i == 0 || j == 0 || i == g.size() - 1 || j == g[0].size() - 1)
-        bound |= true;
-
-    count++;
-
-    dfs(g, count, i + 1, j, bound);
-    dfs(g, count, i - 1, j, bound);
-    dfs(g, count, i, j + 1, bound);
-    dfs(g, count, i, j - 1, bound);
+    if (i < 0 || j < 0 || i >= grid.size() || j >= grid[0].size() || grid[i][j] != 1)
+        return false;
+    int x = i, y = j;
+    if (x == 0 || y == 0 || x == (grid.size() - 1) || y == (grid[0].size() - 1))
+        return true;
+    grid[i][j] = 0;
+    area++;
+    bool a = dfs(grid, i + 1, j, area);
+    bool b = dfs(grid, i - 1, j, area);
+    bool c = dfs(grid, i, j - 1, area);
+    bool d = dfs(grid, i, j + 1, area);
+    return (a | b | c | d);
 }
 
 int numEnclaves(vector<vector<int>> &grid)
 {
     int m = grid.size();
     int n = grid[0].size();
-
-    int count = 0;
-
+    int sum = 0;
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < n; j++)
         {
-            int subCount = 0;
-            bool bound = false;
             if (grid[i][j] == 1)
             {
-                // dfs call
-                dfs(grid, subCount, i, j, bound);
-                if (bound == 1)
-                    subCount = 0;
-                count += subCount;
+                int area = 0;
+                bool canReach = dfs(grid, i, j, area);
+                if (!canReach)
+                    sum += area;
             }
         }
     }
-    return count;
+    return sum;
 }
-
 
 /*bfs*/
 // TC: O(N*M)
 // SC: O(N*M)
+pair<bool, int> bfs(vector<vector<int>> &grid, int i, int j)
+{
+    int area = 0;
+    bool canReach = false;
+    queue<pair<int, int>> q;
+    q.push({i, j});
+    grid[i][j] = 0;
+    int dir[][4] = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    while (!q.empty())
+    {
+        int x = q.front().first;
+        int y = q.front().second;
+        area++;
+        if (x == 0 || y == 0 || x == (grid.size() - 1) || y == (grid[0].size() - 1))
+            canReach = true;
+        q.pop();
+        for (int K = 0; K < 4; K++)
+        {
+            int X = x + dir[K][0];
+            int Y = y + dir[K][1];
+            if (X < 0 || Y < 0 || X >= grid.size() || Y >= grid[0].size() || grid[X][Y] != 1)
+                continue;
+
+            q.push({X, Y});
+            grid[X][Y] = 0;
+        }
+    }
+    return {canReach, area};
+}
+
 int numEnclaves(vector<vector<int>> &grid)
 {
-    int n = grid.size(), m = grid[0].size(), ans = 0;
-
-    // arrays to traverse in 4-directions
-    vector<int> dx = {0, 0, 1, -1};
-    vector<int> dy = {1, -1, 0, 0};
-
-    for (int i = 0; i < n; i++)
+    int m = grid.size();
+    int n = grid[0].size();
+    int sum = 0;
+    for (int i = 0; i < m; i++)
     {
-        for (int j = 0; j < m; j++)
+        for (int j = 0; j < n; j++)
         {
             if (grid[i][j] == 1)
             {
-                bool flag = false; // bool variable to determine land lies on boundary or not
-                queue<pair<int, int>> q;
-                q.push({i, j});
-                grid[i][j] = 0; // make the value from 1 to 0 so that we need not require visited array
-                if (i == 0 || i == n - 1 || j == 0 || j == m - 1)
-                    flag = true;
-                int temp = 1; // To count the number of cells in a land contribute to this work
-
-                while (!q.empty())
-                {
-                    int x = q.front().first, y = q.front().second;
-                    q.pop();
-                    for (int k = 0; k < 4; k++)
-                    { // traverse the 4 directions for current cell
-                        int x1 = x + dx[k], y1 = y + dy[k];
-                        if (x1 >= 0 and x1 < n and y1 >= 0 and y1 < m and grid[x1][y1] == 1)
-                        {
-
-                            // if current cell lies on boundary then we can reach the boundary of grid through any of the cell of this land
-                            if (x1 == 0 || x1 == n - 1 || y1 == 0 || y1 == m - 1)
-                                flag = true;
-                            q.push({x1, y1});
-                            grid[x1][y1] = 0;
-                            temp++;
-                        }
-                    }
-                }
-
-                if (!flag)
-                    ans += temp; // If not able to reach boundary then add all cells of the land to answer.
+                pair<bool, int> r = bfs(grid, i, j);
+                bool canReach = r.first;
+                if (!canReach)
+                    sum += r.second;
             }
         }
     }
-    return ans;
+    return sum;
 }
