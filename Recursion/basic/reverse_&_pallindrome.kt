@@ -26,4 +26,4 @@ fun main() {
         println(checkPallindrome(0, it))
         println("--------------")
     }
-}≈
+}
