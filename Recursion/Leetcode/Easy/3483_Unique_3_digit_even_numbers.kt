@@ -1,3 +1,8 @@
+/**
+ * Question:
+ * https://leetcode.com/problems/unique-3-digit-even-numbers/?envType=problem-list-v2&envId=recursion
+ */
+
 private fun getAll(
     d: IntArray,
     num: Int,
@@ -56,6 +61,13 @@ fun totalNumbers(digits: IntArray): Int {
         res
     )
 
+    // recursion -
+    // TC: O(n^k) (n - length of digits, k - number of digits in the target)
+    // SC: O(k)
     return res.size
+
+    // optimization - 10
+    // TC: k*(10^k)
+    // SC: O(1)
     return getAll(digits)
 }

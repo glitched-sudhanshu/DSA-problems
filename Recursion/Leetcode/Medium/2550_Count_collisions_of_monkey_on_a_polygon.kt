@@ -5,6 +5,8 @@
 
 private val mod = (10.0.pow(9) + 7).toLong()
 
+//TC: O(logN)
+//SC: O(1)
 private fun pow(num: Int, times: Int): Long {
     var ans = 1L
     var n = times.toLong()
@@ -19,6 +21,8 @@ private fun pow(num: Int, times: Int): Long {
     return ans
 }
 
+//TC: O(logN)
+//SC: O(logN)
 private fun powRec(num: Int, times: Int): Long {
     if(times == 0) return 1L
     val res = powRec(num, times/2)
