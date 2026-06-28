@@ -3,6 +3,36 @@
  * https://leetcode.com/problems/sort-an-array/description/
  */
 
+private fun quickSort(nums: IntArray, low: Int, high: Int) {
+    if (low >= high) return;
+    val partIndex = pivotArray(nums, low, high)
+    quickSort(nums, low, partIndex - 1)
+    quickSort(nums, partIndex + 1, high)
+}
+
+private fun pivotArray(nums: IntArray, low: Int, high: Int): Int {
+    var i = low
+    var j = high
+    val pivot = nums[low]
+    while (i < j) {
+        while (nums[i] <= pivot && i < high) {
+            i++
+        }
+
+        while (nums[j] > pivot && j > low) {
+            j--
+        }
+
+        if (i < j) {
+            val temp = nums[i]
+            nums[i] = nums[j]
+            nums[j] = temp
+        }
+    }
+    nums[low] = nums[j]
+    nums[j] = pivot
+    return j
+}
 
 private fun merge(nums: IntArray, low: Int, mid: Int, high: Int) {
     var l1 = low
